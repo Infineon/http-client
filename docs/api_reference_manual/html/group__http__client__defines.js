@@ -1,0 +1,25 @@
+var group__http__client__defines =
+[
+    [ "CY_RSLT_MODULE_HTTP_CLIENT_ERR_CODE_START", "group__http__client__defines.html#ga5fa609ebef7659f9eabb072a5677d0a7", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERR_BASE", "group__http__client__defines.html#ga97121dfed241440092fafbd688dc3c37", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR", "group__http__client__defines.html#ga9d7d59c0ba560c126ac0d0a97a3f7cd6", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_BADARG", "group__http__client__defines.html#gaf943c928b7b5a97ea3a2bb4b4605a828", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_NOMEM", "group__http__client__defines.html#gabd99623f45b12553462b46771c80948b", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_INIT_FAIL", "group__http__client__defines.html#ga80a32e6ad3169b0c2e14430d155427d8", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_DEINIT_FAIL", "group__http__client__defines.html#ga973635cba64b30ab7f33baf5cc21fdef", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_OBJ_NOT_INITIALIZED", "group__http__client__defines.html#ga97fc6005d021053b6716a6553ae61067", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_CONNECT_FAIL", "group__http__client__defines.html#gaa26016b970a9f3932c3494ca40fb9852", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_DISCONNECT_FAIL", "group__http__client__defines.html#gaf1490292015c83766300de619151a566", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_NOT_CONNECTED", "group__http__client__defines.html#ga15e1ede9984aefdfe78f1f849b302e61", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_ALREADY_CONNECTED", "group__http__client__defines.html#ga8fd8b41c3e2e36bac317e1b6f5833b01", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_INVALID_CREDENTIALS", "group__http__client__defines.html#gaed36f1c20a282305fdfa253995c27228", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_HANDSHAKE_FAIL", "group__http__client__defines.html#gaaaad4f4e8051c833862febef0b6f563b", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_PARTIAL_RESPONSE", "group__http__client__defines.html#ga7f30a585a523c4a3163ca447dec90a72", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_NO_RESPONSE", "group__http__client__defines.html#gaf5e20aafddb3f2068ec6b70e9b7286a0", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_MAX_HEADER_SIZE_EXCEEDED", "group__http__client__defines.html#ga63962359b4f74d699c2daa6334213d1a", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_INVALID_CHUNK_HEADER", "group__http__client__defines.html#gacdb804db6852bfa39eec9e1a4bfc73cb", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_INVALID_CONTENT_LENGTH", "group__http__client__defines.html#gad4d8dbbf98b8696fd5245001db3b9cfa", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_PARSER", "group__http__client__defines.html#gadb536d9122616992b7b9d27332b85eb1", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_NO_HEADER", "group__http__client__defines.html#gacd0d95e4d9b6f3d224c1453a3e1e6719", null ],
+    [ "CY_RSLT_HTTP_CLIENT_ERROR_INVALID_RESPONSE", "group__http__client__defines.html#ga4dd593aa0afa32a581df372e9605e416", null ]
+];
