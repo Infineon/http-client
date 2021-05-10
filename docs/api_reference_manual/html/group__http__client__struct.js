@@ -32,7 +32,12 @@ var group__http__client__struct =
       [ "CY_HTTP_CLIENT_METHOD_GET", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719a4c8f9e137082ad383df25f24ed6da6df", null ],
       [ "CY_HTTP_CLIENT_METHOD_PUT", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719a60ea4852757378e446e99fdcc3dd2f3f", null ],
       [ "CY_HTTP_CLIENT_METHOD_POST", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719aa57add7a1658b46b9daa80dd913ed155", null ],
-      [ "CY_HTTP_CLIENT_METHOD_HEAD", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719a62a3012ecbea48c0e3c699097a64e7cb", null ]
+      [ "CY_HTTP_CLIENT_METHOD_HEAD", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719a62a3012ecbea48c0e3c699097a64e7cb", null ],
+      [ "CY_HTTP_CLIENT_METHOD_DELETE", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719a03b73d6908465828cac9e75afbd031f5", null ],
+      [ "CY_HTTP_CLIENT_METHOD_PATCH", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719ac526e1e74c1bad5a33990a05fc45cdba", null ],
+      [ "CY_HTTP_CLIENT_METHOD_CONNECT", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719a0d4f350757b7d7b9d8ceb20398bc126e", null ],
+      [ "CY_HTTP_CLIENT_METHOD_OPTIONS", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719a07a7d20dbee274adc0c82d095bb488c9", null ],
+      [ "CY_HTTP_CLIENT_METHOD_TRACE", "group__http__client__struct.html#gga5afd8642fb8bbb246c21b7b4d2a4b719a149cd8a67ea837ca647310e195896602", null ]
     ] ],
     [ "cy_http_client_disconn_type_t", "group__http__client__struct.html#ga2e530146f147d2427ff4a524054ffa2f", [
       [ "CY_HTTP_CLIENT_DISCONN_TYPE_SERVER_INITIATED", "group__http__client__struct.html#gga2e530146f147d2427ff4a524054ffa2fa0c9afe48c68a8828e2c15327107a9f31", null ],

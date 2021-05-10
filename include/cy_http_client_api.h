@@ -1,10 +1,10 @@
 /*
- * Copyright 2020, Cypress Semiconductor Corporation or a subsidiary of
- * Cypress Semiconductor Corporation. All Rights Reserved.
+ * Copyright 2021, Cypress Semiconductor Corporation (an Infineon company) or
+ * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
  *
  * This software, including source code, documentation and related
- * materials ("Software"), is owned by Cypress Semiconductor Corporation
- * or one of its subsidiaries ("Cypress") and is protected by and subject to
+ * materials ("Software") is owned by Cypress Semiconductor Corporation
+ * or one of its affiliates ("Cypress") and is protected by and subject to
  * worldwide patent protection (United States and foreign),
  * United States copyright laws and international treaty provisions.
  * Therefore, you may use this Software only as provided in the license
@@ -13,7 +13,7 @@
  * If no EULA applies, Cypress hereby grants you a personal, non-exclusive,
  * non-transferable license to copy, modify, and compile the Software
  * source code solely for use in connection with Cypress's
- * integrated circuit products. Any reproduction, modification, translation,
+ * integrated circuit products.  Any reproduction, modification, translation,
  * compilation, or representation of this Software except as specified
  * above is prohibited without the express written permission of Cypress.
  *
@@ -171,10 +171,15 @@
  */
 typedef enum cy_http_client_method
 {
-    CY_HTTP_CLIENT_METHOD_GET,                       /**< HTTP Client Method GET string   */
-    CY_HTTP_CLIENT_METHOD_PUT,                       /**< HTTP Client Method PUT string   */
-    CY_HTTP_CLIENT_METHOD_POST,                      /**< HTTP Client Method POST string  */
-    CY_HTTP_CLIENT_METHOD_HEAD                       /**< HTTP Client Method HEAD string  */
+    CY_HTTP_CLIENT_METHOD_GET,                       /**< HTTP GET Method     */
+    CY_HTTP_CLIENT_METHOD_PUT,                       /**< HTTP PUT Method     */
+    CY_HTTP_CLIENT_METHOD_POST,                      /**< HTTP POST Method    */
+    CY_HTTP_CLIENT_METHOD_HEAD,                      /**< HTTP HEAD Method    */
+    CY_HTTP_CLIENT_METHOD_DELETE,                    /**< HTTP DELETE Method  */
+    CY_HTTP_CLIENT_METHOD_PATCH,                     /**< HTTP PATCH Method   */
+    CY_HTTP_CLIENT_METHOD_CONNECT,                   /**< HTTP CONNECT Method */
+    CY_HTTP_CLIENT_METHOD_OPTIONS,                   /**< HTTP OPTIONS Method */
+    CY_HTTP_CLIENT_METHOD_TRACE                      /**< HTTP TRACE Method   */
 } cy_http_client_method_t;
 
 /**

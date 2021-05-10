@@ -10,7 +10,7 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 - Secure [with TLS security] and non-secure modes of connection.
 
-- Supports RESTful HTTP methods: HEAD, GET, PUT, and POST.
+- Supports RESTful HTTP methods: HEAD, GET, PUT, POST, DELETE, PATCH, CONNECT, OPTIONS and TRACE.
 
 - Provides synchronous API to send the request and receive the response.
 
