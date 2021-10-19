@@ -110,7 +110,7 @@ typedef void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="memdesc:gaa29452c737f81db0bc8923aa83cfe674"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP Client handle. <br /></td></tr>
 <tr class="separator:gaa29452c737f81db0bc8923aa83cfe674"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7c94995072a4ae648de3644d2e573847"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__client__struct.html#ga7c94995072a4ae648de3644d2e573847">cy_http_disconnect_callback_t</a>) (<a class="el" href="group__http__client__struct.html#gaa29452c737f81db0bc8923aa83cfe674">cy_http_client_t</a> handle, <a class="el" href="group__http__client__struct.html#ga2e530146f147d2427ff4a524054ffa2f">cy_http_client_disconn_type_t</a> type, void *user_data)</td></tr>
-<tr class="memdesc:ga7c94995072a4ae648de3644d2e573847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect notification callback function.  <a href="#ga7c94995072a4ae648de3644d2e573847">More...</a><br /></td></tr>
+<tr class="memdesc:ga7c94995072a4ae648de3644d2e573847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect notification callback function which was registered while invoking /ref cy_http_client_create.  <a href="#ga7c94995072a4ae648de3644d2e573847">More...</a><br /></td></tr>
 <tr class="separator:ga7c94995072a4ae648de3644d2e573847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -159,7 +159,8 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Disconnect notification callback function. </p>
+<p>Disconnect notification callback function which was registered while invoking /ref cy_http_client_create. </p>
+<p>On disconnect event, the application needs to call <a class="el" href="group__group__c__api__functions.html#ga27849dabb0b78d9a7f145af192881935" title="Disconnects the HTTP Client network connection. ">cy_http_client_disconnect()</a> to disconnect.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">handle</td><td>[in] : Handle for which disconnection has occurred. </td></tr>

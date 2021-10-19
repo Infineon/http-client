@@ -195,7 +195,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">server_info</td><td>[in] : Pointer for the HTTP Client Server information required during connect and send. </td></tr>
     <tr><td class="paramname">disconn_cb</td><td>[in] : Pointer to the callback function to be invoked on disconnect. </td></tr>
     <tr><td class="paramname">user_data</td><td>[in] : User data to be sent while invoking the disconnect callback. </td></tr>
-    <tr><td class="paramname">handle</td><td>[out] : Pointer to store the HTTP Client handle allocated by this function on a successful return.</td></tr>
+    <tr><td class="paramname">handle</td><td>[out] : Pointer to store the HTTP Client handle allocated by this function on a successful return. Caller should not free the handle directly. User needs to invoke <a class="el" href="group__group__c__api__functions.html#ga3af8e73dc90682c81944af143a076fac">cy_http_client_delete</a> to free the handle.</td></tr>
   </table>
   </dd>
 </dl>
@@ -347,7 +347,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sends the HTTP request to the server and returns the received HTTP response from the server. </p>
-<p>This function must be called after calling <a class="el" href="group__group__c__api__functions.html#ga854f05c69a7859ed841b7a54291481dc">cy_http_client_connect</a>. This API will return if the data is not sent or the response is not received within the timeout configured in <a class="el" href="group__group__c__api__functions.html#ga854f05c69a7859ed841b7a54291481dc">cy_http_client_connect</a>.</p>
+<p>This function must be called after calling <a class="el" href="group__group__c__api__functions.html#ga854f05c69a7859ed841b7a54291481dc">cy_http_client_connect</a>. This API will return if the data is not sent or the response is not received within the timeout configured in <a class="el" href="group__group__c__api__functions.html#ga854f05c69a7859ed841b7a54291481dc">cy_http_client_connect</a>. This is a synchronous API. For a given HTTP Client instance, the caller has to wait till this API returns to initiate a new <a class="el" href="group__group__c__api__functions.html#ga7bed0b2dfd40997c8471fc60ae27efb9">cy_http_client_send</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">handle</td><td>[in] : HTTP Client handle created using <a class="el" href="group__group__c__api__functions.html#ga541271f1a31f2c10ccd07db315301a14">cy_http_client_create</a>. </td></tr>

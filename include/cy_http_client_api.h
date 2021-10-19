@@ -80,7 +80,7 @@
    \endverbatim
  *
  * The data structure cy_rslt_t is part of cy_result.h.
- * In AnyCloud, the PSoC 6 MCU target platform is located in <core_lib/include>.
+ * In ModusToolbox, the PSoC 6 MCU target platform is located in <core_lib/include>.
  *
  * Module base: This base is derived from CY_RSLT_MODULE_MIDDLEWARE_BASE (defined in cy_result.h) and is an offset of CY_RSLT_MODULE_MIDDLEWARE_BASE.
  *              Details of the offset and the middleware base are defined in cy_result_mw.h, which is part of [Github connectivity-utilities] (https://github.com/cypresssemiconductorco/connectivity-utilities).
@@ -200,7 +200,8 @@ typedef enum cy_http_client_disconn_type
 typedef void* cy_http_client_t;
 
 /**
- * Disconnect notification callback function
+ * Disconnect notification callback function which was registered while invoking /ref cy_http_client_create.
+ * On disconnect event, the application needs to call cy_http_client_disconnect() to disconnect.
  *
  * @param handle [in]       : Handle for which disconnection has occurred.
  * @param type [in]         : Disconnect type.
@@ -344,7 +345,8 @@ cy_rslt_t cy_http_client_init(void);
  * @param server_info [in]           : Pointer for the HTTP Client Server information required during connect and send.
  * @param disconn_cb [in]            : Pointer to the callback function to be invoked on disconnect.
  * @param user_data [in]             : User data to be sent while invoking the disconnect callback.
- * @param handle [out]               : Pointer to store the HTTP Client handle allocated by this function on a successful return.
+ * @param handle [out]               : Pointer to store the HTTP Client handle allocated by this function on a successful return. 
+ *                                     Caller should not free the handle directly. User needs to invoke \ref cy_http_client_delete to free the handle.
  *
  * @return cy_rslt_t                 : CY_RSLT_SUCCESS on success; error codes in @ref http_client_defines otherwise.
  */
@@ -378,6 +380,7 @@ cy_rslt_t cy_http_client_write_header(cy_http_client_t handle, cy_http_client_re
  * Sends the HTTP request to the server and returns the received HTTP response from the server.
  * This function must be called after calling \ref cy_http_client_connect.
  * This API will return if the data is not sent or the response is not received within the timeout configured in \ref cy_http_client_connect.
+ * This is a synchronous API. For a given HTTP Client instance, the caller has to wait till this API returns to initiate a new \ref cy_http_client_send.
  *
  * @param handle [in]                : HTTP Client handle created using \ref cy_http_client_create.
  * @param request [in]               : Pointer containing the HTTP request header updated at \ref cy_http_client_write_header.

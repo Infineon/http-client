@@ -4,7 +4,7 @@
 ## Introduction
 
 This library provides the HTTP Client implementation that can work on the PSoC® 6 MCU platforms with Wi-Fi connectivity.
-This library supports RESTful methods such as GET, PUT, POST, and HEAD to communicate with the HTTP Server.
+This library supports RESTful methods such as GET, PUT, POST, and HEAD to communicate with the HTTP Server. It uses **coreHTTP** module of **AWS IoT Device SDK for Embedded C** library. Please refer to **AWS IoT Device SDK for Embedded C** library's [readme](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/202011.00#corehttp) for the HTTP protocol versions supported.
 
 ## Features
 
@@ -34,11 +34,13 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 - [PSoC 6 WiFi-BT Pioneer Kit (CY8CKIT-062-WiFi-BT)](https://www.cypress.com/documentation/development-kitsboards/psoc-6-wifi-bt-pioneer-kit-cy8ckit-062-wifi-bt)
 
+- [PSoC 62S2 evaluation kit (CY8CEVAL-062S2-LAI-4373M2)](https://www.cypress.com/documentation/development-kitsboards/psoc-62s2-evaluation-kit-cy8ceval-062s2)
+
 ## Supported Frameworks
 
-This middleware library supports the AnyCloud Framework.
+This middleware library supports the ModusToolbox&trade; environment.
 
-AnyCloud is a FreeRTOS-based solution. This library uses the [abstraction-rtos](https://github.com/cypresssemiconductorco/abstraction-rtos) library for RTOS abstraction APIs and the [secure-sockets](https://github.com/cypresssemiconductorco/secure-sockets) and [wifi-connection-manager](https://github.com/cypresssemiconductorco/wifi-connection-manager) libraries for network and connectivity functions.
+In this environment the HTTP Client Library uses the [abstraction-rtos](https://github.com/cypresssemiconductorco/abstraction-rtos) library for RTOS abstraction APIs and the [secure-sockets](https://github.com/cypresssemiconductorco/secure-sockets) and [wifi-connection-manager](https://github.com/cypresssemiconductorco/wifi-connection-manager) libraries for network and connectivity functions.
 
 ## Dependencies
 
@@ -48,7 +50,7 @@ AnyCloud is a FreeRTOS-based solution. This library uses the [abstraction-rtos](
 
 ## Quick Start
 
-This library is supported only on AnyCloud framework.
+This library is supported only on ModusToolbox&trade;.
 
 1. Review pre-defined configuration files that have been bundled with the wifi-mw-core library for FreeRTOS, lwIP, and mbed TLS, and make the required adjustments.
 
@@ -97,4 +99,4 @@ This library is supported only on AnyCloud framework.
 
 - [HTTP Client API Reference Guide](https://cypresssemiconductorco.github.io/http-client/api_reference_manual/html/index.html)
 
-- [HTTP Client Library Version](./version.txt)
+- [HTTP Client Library Version](./version.xml)

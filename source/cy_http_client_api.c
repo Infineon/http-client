@@ -515,7 +515,7 @@ cy_rslt_t cy_http_client_connect( cy_http_client_t handle,
     nw_disconn_cb.user_data = ( void * )http_obj;
     http_obj->user_disconnect = false;
 
-    result = cy_awsport_network_create( http_obj->network_context, &(http_obj->server_info), http_obj->security, &nw_disconn_cb );
+    result = cy_awsport_network_create( http_obj->network_context, &(http_obj->server_info), http_obj->security, &nw_disconn_cb, NULL );
     if( result != CY_RSLT_SUCCESS )
     {
         cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "http client library network create failed with result = 0x%X\n", (unsigned long)result );
