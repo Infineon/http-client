@@ -7,6 +7,10 @@ See the [README.md](./README.md) for a complete description of the HTTP Client l
 None.
 
 ## Changelog
+
+### v1.2.0
+* Added support for CY8CEVAL-062S2-MUR-43439M2 kit
+
 ### v1.1.1
 * Documentation updates
 * General bug fixes
