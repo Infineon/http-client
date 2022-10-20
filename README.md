@@ -28,40 +28,38 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 ## Supported Platforms
 
-- [PSoC&trade; 6 WiFi-BT Prototyping Kit (CY8CPROTO-062-4343W)](https://www.cypress.com/documentation/development-kitsboards/psoc-6-wi-fi-bt-prototyping-kit-cy8cproto-062-4343w)
+- [PSoC&trade; 6 WiFi-BT Prototyping Kit (CY8CPROTO-062-4343W)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8cproto-062-4343w/)
 
-- [PSoC&trade; 62S2 Wi-Fi BT Pioneer Kit (CY8CKIT-062S2-43012)](https://www.cypress.com/documentation/development-kitsboards/psoc-62s2-wi-fi-bt-pioneer-kit-cy8ckit-062s2-43012)
+- [PSoC&trade; 62S2 Wi-Fi BT Pioneer Kit (CY8CKIT-062S2-43012)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-43012/)
 
-- [PSoC&trade; 6 WiFi-BT Pioneer Kit (CY8CKIT-062-WiFi-BT)](https://www.cypress.com/documentation/development-kitsboards/psoc-6-wifi-bt-pioneer-kit-cy8ckit-062-wifi-bt)
+- [PSoC&trade; 6 WiFi-BT Pioneer Kit (CY8CKIT-062-WiFi-BT)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062-wifi-bt/)
 
-- [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-LAI-4373M2)](https://www.cypress.com/documentation/development-kitsboards/psoc-62s2-evaluation-kit-cy8ceval-062s2)
+- [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-LAI-4373M2)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/)
 
-- [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-MUR-43439M2)](https://www.cypress.com/documentation/development-kitsboards/psoc-62s2-evaluation-kit-cy8ceval-062s2)
+- [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-MUR-43439M2)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/)
 
 ## Supported Frameworks
 
 This middleware library supports the ModusToolbox&trade; environment.
 
-In this environment the HTTP Client Library uses the [abstraction-rtos](https://github.com/cypresssemiconductorco/abstraction-rtos) library for RTOS abstraction APIs and the [secure-sockets](https://github.com/cypresssemiconductorco/secure-sockets) and [wifi-connection-manager](https://github.com/cypresssemiconductorco/wifi-connection-manager) libraries for network and connectivity functions.
+In this environment the HTTP Client Library uses the [abstraction-rtos](https://github.com/Infineon/abstraction-rtos) library for RTOS abstraction APIs and the [secure-sockets](https://github.com/Infineon/secure-sockets) and [wifi-connection-manager](https://github.com/Infineon/wifi-connection-manager) libraries for network and connectivity functions.
 
 ## Dependencies
 
-- [Wi-Fi Middleware Core](https://github.com/cypresssemiconductorco/wifi-mw-core)
-
-- [AWS IoT SDK PORT](https://github.com/cypresssemiconductorco/aws-iot-device-sdk-port)
+- [AWS IoT SDK PORT](https://github.com/Infineon/aws-iot-device-sdk-port)
 
 ## Quick Start
 
 This library is supported only on ModusToolbox&trade;.
 
-1. Review pre-defined configuration files that have been bundled with the wifi-mw-core library for FreeRTOS, lwIP, and mbed TLS, and make the required adjustments.
+1. Review and make the required changes to the pre-defined configuration files.
+ - The configuration files are bundled with the wifi-mw-core library for FreeRTOS, lwIP, and Mbed TLS. See [README.md](https://github.com/Infineon/wifi-mw-core/blob/master/README.md) for details.
+ - If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using **Wi-Fi core freertos lwip mbedtls bundle library**, the configuration files are in `wifi-core-freertos-lwip-mbedtls/configs` folder. Similarly if the application is using **Ethernet Core FreeRTOS lwIP mbedtls library**, the configuration files are in `ethernet-core-freertos-lwip-mbedtls/configs` folder.
 
-   See the "Quick Start" section in [README.md](https://github.com/cypresssemiconductorco/wifi-mw-core/blob/master/README.md).
+- If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using Wi-Fi core freertos lwip mbedtls bundle library, the configuration files are in wifi-core-freertos-lwip-mbedtls/configs folder. Similarly if the application is using Ethernet Core FreeRTOS lwIP mbedtls library, the configuration files are in ethernet-core-freertos-lwip-mbedtls/configs folder.
 
-2. Define following COMPONENTS in the application's Makefile for the HTTP Client Library.
 
-   For additional information, see the "Quick Start" section in [README.md](https://github.com/cypresssemiconductorco/wifi-mw-core/blob/master/README.md).
-
+2. Define the following COMPONENTS in the application's Makefile for the Azure port library.
     ```
     COMPONENTS=FREERTOS MBEDTLS LWIP SECURE_SOCKETS
     ```
@@ -73,7 +71,7 @@ This library is supported only on ModusToolbox&trade;.
        ```
    2. Call the `cy_log_init()` function provided by the *cy-log* module. cy-log is part of the *connectivity-utilities* library.
 
-      See [connectivity-utilities library API documentation](https://cypresssemiconductorco.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html) for cy-log details.
+      See [connectivity-utilities library API documentation](https://infineon.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html) for cy-log details.
 
 4. Define the following macro in the application's Makefile to configure the response header maximum length to 'N'. By default, this value will be set to 2048:
    ```
@@ -99,6 +97,6 @@ This library is supported only on ModusToolbox&trade;.
 
 - [HTTP Client RELEASE.md](./RELEASE.md)
 
-- [HTTP Client API Reference Guide](https://cypresssemiconductorco.github.io/http-client/api_reference_manual/html/index.html)
+- [HTTP Client API Reference Guide](https://infineon.github.io/http-client/api_reference_manual/html/index.html)
 
 - [HTTP Client Library Version](./version.xml)
