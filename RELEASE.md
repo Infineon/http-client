@@ -10,6 +10,11 @@ See the [README.md](./README.md) for a complete description of the HTTP Client l
 
 ## Changelog
 
+### v1.2.2
+
+* Updated FreeRTOS specific code to make it generic.
+* Documentation updates.
+
 ### v1.2.1
 
 * Removed unwanted dependencies from the deps folder

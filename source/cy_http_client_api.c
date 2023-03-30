@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, Cypress Semiconductor Corporation (an Infineon company) or
+ * Copyright 2023, Cypress Semiconductor Corporation (an Infineon company) or
  * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
  *
  * This software, including source code, documentation and related
@@ -113,7 +113,7 @@ static cy_rslt_t http_client_error( HTTPStatus_t status );
 static uint8_t           http_client_instance_count = 0;
 static cy_mutex_t        http_mutex;
 static cy_thread_t       http_client_disconnect_event_thread = NULL;
-static cy_queue_t        http_client_disconnect_event_queue = NULL;
+static cy_queue_t        http_client_disconnect_event_queue;
 
 /******************************************************
  *               Function Definitions
@@ -324,7 +324,7 @@ cy_rslt_t cy_http_client_init( void )
 
     /* Create the thread to handle disconnect events */
     result = cy_rtos_create_thread( &http_client_disconnect_event_thread, http_client_disconn_event_thread, "HTTPCLIENTdisconnectEventThread", NULL,
-                                    CY_HTTP_CLIENT_DISCONNECT_EVENT_THREAD_STACK_SIZE, CY_HTTP_CLIENT_DISCONNECT_EVENT_THREAD_PRIORITY, NULL );
+                                    CY_HTTP_CLIENT_DISCONNECT_EVENT_THREAD_STACK_SIZE, CY_HTTP_CLIENT_DISCONNECT_EVENT_THREAD_PRIORITY, 0 );
     if( result != CY_RSLT_SUCCESS )
     {
         cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_rtos_create_thread failed with Error : [0x%X] ", (unsigned int)result );
