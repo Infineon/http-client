@@ -10,6 +10,11 @@ See the [README.md](./README.md) for a complete description of the HTTP Client l
 
 ## Changelog
 
+### v1.3.0
+
+* Added support for KIT_XMC72_EVK kit
+* Removed deps folder
+
 ### v1.2.2
 
 * Updated FreeRTOS specific code to make it generic.
@@ -40,10 +45,8 @@ This version of the library was validated for compatibility with the following s
 
 | Software and Tools                                        | Version |
 | :---                                                      | :----:  |
-| ModusToolbox&trade; Software Environment                  | 3.0     |
-| - ModusToolbox&trade; Device Configurator                 | 4.0     |
-| - ModusToolbox&trade; CapSense Configurator / Tuner tools | 5.0     |
-| PSoC 6 Peripheral Driver Library (PDL)                    | 3.0.0   |
-| GCC Compiler                                              | 10.3.1  |
+| ModusToolbox&trade; Software Environment                  | 3.1     |
+| ModusToolbox&trade; Device Configurator                   | 4.10    |
+| GCC Compiler                                              | 11.3.1  |
 | IAR Compiler (Only for ModusToolbox&trade;)               | 9.30    |
 | Arm Compiler 6                                            | 6.16    |

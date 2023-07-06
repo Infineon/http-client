@@ -8,6 +8,8 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 ## Features
 
+- Supports Wi-Fi and Ethernet connections.
+
 - Secure [with TLS security] and non-secure modes of connection.
 
 - Supports RESTful HTTP methods: HEAD, GET, PUT, POST, DELETE, PATCH, CONNECT, OPTIONS and TRACE.
@@ -38,6 +40,8 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 - [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-MUR-43439M2)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/)
 
+- [XMC7200D-E272K8384 kit (KIT-XMC72-EVK)](https://www.infineon.com/KIT_XMC72_EVK)
+
 ## Supported Frameworks
 
 This middleware library supports the ModusToolbox&trade; environment.
@@ -52,18 +56,40 @@ In this environment the HTTP Client Library uses the [abstraction-rtos](https://
 
 This library is supported only on ModusToolbox&trade;.
 
-1. Review and make the required changes to the pre-defined configuration files.
+1. To use http-client library with Wi-Fi kits on FreeRTOS, lwIP, and Mbed TLS combination, the application should pull [http-client](https://github.com/Infineon/http-client) library and [wifi-core-freertos-lwip-mbedtls](https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls) library which will internally pull secure-sockets, wifi-connection-manager, FreeRTOS, lwIP, Mbed TLS and other dependent modules.
+To pull wifi-core-freertos-lwip-mbedtls and http-client libraries create the following *.mtb* files in deps folder.
+   - *wifi-core-freertos-lwip-mbedtls.mtb:*
+      <code>
+      https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/wifi-core-freertos-lwip-mbedtls/latest-v1.X
+      </code>
+   - *http-client.mtb:*
+      <code>
+      https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X
+      </code>
+
+2. To use http-client library with Ethernet kits on FreeRTOS, lwIP, and Mbed TLS combination, the application should pull [http-client](https://github.com/Infineon/http-client) library and [ethernet-core-freertos-lwip-mbedtls](https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls) library which will internally pull secure-sockets, ethernet-connection-manager, FreeRTOS, lwIP, Mbed TLS and other dependent modules.
+To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the following *.mtb* files in deps folder.
+   - *ethernet-core-freertos-lwip-mbedtls.mtb:*
+      <code>
+      https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/ethernet-core-freertos-lwip-mbedtls/latest-v1.X
+      </code>
+   - *http-client.mtb:*
+      <code>
+      https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X
+      </code>
+
+3. Review and make the required changes to the pre-defined configuration files.
  - The configuration files are bundled with the wifi-mw-core library for FreeRTOS, lwIP, and Mbed TLS. See [README.md](https://github.com/Infineon/wifi-mw-core/blob/master/README.md) for details.
  - If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using **Wi-Fi core freertos lwip mbedtls bundle library**, the configuration files are in `wifi-core-freertos-lwip-mbedtls/configs` folder. Similarly if the application is using **Ethernet Core FreeRTOS lwIP mbedtls library**, the configuration files are in `ethernet-core-freertos-lwip-mbedtls/configs` folder.
 
 - If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using Wi-Fi core freertos lwip mbedtls bundle library, the configuration files are in wifi-core-freertos-lwip-mbedtls/configs folder. Similarly if the application is using Ethernet Core FreeRTOS lwIP mbedtls library, the configuration files are in ethernet-core-freertos-lwip-mbedtls/configs folder.
 
 
-2. Define the following COMPONENTS in the application's Makefile for the Azure port library.
+4. Define the following COMPONENTS in the application's Makefile for the Azure port library.
     ```
     COMPONENTS=FREERTOS MBEDTLS LWIP SECURE_SOCKETS
     ```
-3. By default, the HTTP Client Library disables all the debug log messages. To enable log messages, the application must perform the following:
+5. By default, the HTTP Client Library disables all the debug log messages. To enable log messages, the application must perform the following:
 
    1. Add the `ENABLE_HTTP_CLIENT_LOGS` macro to the *DEFINES* in the code example's Makefile. The Makefile entry would look like as follows:
        ```
@@ -73,21 +99,21 @@ This library is supported only on ModusToolbox&trade;.
 
       See [connectivity-utilities library API documentation](https://infineon.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html) for cy-log details.
 
-4. Define the following macro in the application's Makefile to configure the response header maximum length to 'N'. By default, this value will be set to 2048:
+6. Define the following macro in the application's Makefile to configure the response header maximum length to 'N'. By default, this value will be set to 2048:
    ```
    DEFINES+=HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES=<N>
    ```
-5. Define the following macro in the application's Makefile to configure the user agent name in all request headers. By default, this component will be added to the request header. Update this for user-defined agent values:
+7. Define the following macro in the application's Makefile to configure the user agent name in all request headers. By default, this component will be added to the request header. Update this for user-defined agent values:
 
    ```
    DEFINES += HTTP_USER_AGENT_VALUE="\"anycloud-http-client\""
    ```
-6. Define the following macro in the application's Makefile to mandatorily disable custom configuration header file:
+8. Define the following macro in the application's Makefile to mandatorily disable custom configuration header file:
    ```
    DEFINES += HTTP_DO_NOT_USE_CUSTOM_CONFIG
    DEFINES += MQTT_DO_NOT_USE_CUSTOM_CONFIG
    ```
-7. The "aws-iot-device-sdk-port" layer includes the "coreHTTP" and "coreMQTT" modules of the "aws-iot-device-sdk-embedded-C" library by default. If the user application doesn't use MQTT client features, add the following path in the .cyignore file of the application to exclude the coreMQTT source files from the build.
+9. The "aws-iot-device-sdk-port" layer includes the "coreHTTP" and "coreMQTT" modules of the "aws-iot-device-sdk-embedded-C" library by default. If the user application doesn't use MQTT client features, add the following path in the .cyignore file of the application to exclude the coreMQTT source files from the build.
    ```
    $(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/standard/coreMQTT
    libs/aws-iot-device-sdk-embedded-C/libraries/standard/coreMQTT

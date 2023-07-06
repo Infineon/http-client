@@ -90,6 +90,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <h1><a class="anchor" id="section_features"></a>
 Features</h1>
 <ul>
+<li>Supports Wi-Fi and Ethernet connections.</li>
 <li>Secure [with TLS security] and non-secure modes of connection.</li>
 <li>Supports RESTful HTTP methods: GET, PUT, POST, HEAD, DELETE, PATCH, CONNECT, OPTIONS and TRACE.</li>
 <li>Handles various resource content types such as HTML, Plain, and JSON.</li>
@@ -148,6 +149,7 @@ Supported Platform</h1>
 <li><a href="https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062-wifi-bt/">PSoC&trade; 6 WiFi-BT Pioneer Kit (CY8CKIT-062-WiFi-BT)</a></li>
 <li><a href="https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/">PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-LAI-4373M2)</a></li>
 <li><a href="https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/">PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-MUR-43439M2)</a></li>
+<li><a href="https://www.infineon.com/KIT_XMC72_EVK">XMC7200D-E272K8384 kit (KIT-XMC72-EVK)</a></li>
 </ul>
 <h1><a class="anchor" id="section_frameworks"></a>
 Supported Frameworks</h1>
@@ -166,6 +168,16 @@ Quick Start</h1>
 <h2><a class="anchor" id="framework"></a>
 ModusToolbox™</h2>
 <ul>
+<li>To use http-client library with Wi-Fi kits on FreeRTOS, lwIP, and Mbed TLS combination, the application should pull <a href="https://github.com/Infineon/http-client">http-client</a> library and <a href="https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls">wifi-core-freertos-lwip-mbedtls</a> library which will internally pull secure-sockets, wifi-connection-manager, FreeRTOS, lwIP, Mbed TLS and other dependent modules. To pull wifi-core-freertos-lwip-mbedtls and http-client libraries create the following *.mtb* files in deps folder.<ul>
+<li>wifi-core-freertos-lwip-mbedtls.mtb: <a href="https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/wifi-core-freertos-lwip-mbedtls/latest-v1.X">https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/wifi-core-freertos-lwip-mbedtls/latest-v1.X</a></li>
+<li>http-client.mtb: <a href="https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X">https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X</a></li>
+</ul>
+</li>
+<li>To use http-client library with Ethernet kits on FreeRTOS, lwIP, and Mbed TLS combination, the application should pull <a href="https://github.com/Infineon/http-client">http-client</a> library and <a href="https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls">ethernet-core-freertos-lwip-mbedtls</a> library which will internally pull secure-sockets, ethernet-connection-manager, FreeRTOS, lwIP, Mbed TLS and other dependent modules. To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the following *.mtb* files in deps folder.<ul>
+<li>ethernet-core-freertos-lwip-mbedtls.mtb: <a href="https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/ethernet-core-freertos-lwip-mbedtls/latest-v1.X">https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/ethernet-core-freertos-lwip-mbedtls/latest-v1.X</a></li>
+<li>http-client.mtb: <a href="https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X">https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X</a></li>
+</ul>
+</li>
 <li>Review and make the required changes to the pre-defined configuration files.<ul>
 <li>The configuration files are bundled with the wifi-mw-core library for FreeRTOS, lwIP, and Mbed TLS. See <a href="https://github.com/Infineon/wifi-mw-core/blob/master/README.md">README.md</a> for more details.</li>
 <li>If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using <em>Wi-Fi core freertos lwip mbedtls bundle library</em>, the configuration files are in <code>wifi-core-freertos-lwip-mbedtls/configs</code> folder. Similarly if the application is using <em>Ethernet Core FreeRTOS lwIP mbedtls library</em>, the configuration files are in <code>ethernet-core-freertos-lwip-mbedtls/configs</code> folder.</li>

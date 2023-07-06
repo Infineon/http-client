@@ -586,7 +586,7 @@ cy_rslt_t cy_http_client_write_header( cy_http_client_t handle,
         return CY_RSLT_HTTP_CLIENT_ERROR;
     }
 
-    cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "HTTP client header preparation \n" );
+    cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "HTTP client header preparation \n" );
 
     ( void ) memset( &request_info, 0, sizeof( HTTPRequestInfo_t ) );
     ( void ) memset( &request_headers, 0, sizeof( HTTPRequestHeaders_t ) );
@@ -658,7 +658,7 @@ cy_rslt_t cy_http_client_write_header( cy_http_client_t handle,
         }
     }
 
-    cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nRequest Headers:\n%.*s\n", ( int ) request_headers.headersLen, ( char * ) request_headers.pBuffer );
+    cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nRequest Headers:\n%.*s\n", ( int ) request_headers.headersLen, ( char * ) request_headers.pBuffer );
 
     request->headers_len = request_headers.headersLen;
 
@@ -762,6 +762,9 @@ cy_rslt_t cy_http_client_send( cy_http_client_t handle,
         cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "Connection Closed found in response header. httpresponse.respFlags:[%d]\n", httpresponse.respFlags );
         http_obj->server_disconnect = true;
         cy_http_client_disconnect( handle );
+
+        /* Do disconnect callback */
+        cy_http_disconnect_callback((void*)http_obj);
     }
 
     cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "http client library : Received HTTP response from %.*s%.*s...\n"
@@ -781,13 +784,13 @@ cy_rslt_t cy_http_client_send( cy_http_client_t handle,
         uint32_t revcv_timeout_new = RECV_TIMEOUT_UNCONSUMED_DATA;
         uint32_t timeout_length = sizeof(uint32_t);
 
-        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "Read and ignore the data in the socket that is not consumed by HTTPClient_Send\n" );
+        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "Read and ignore the data in the socket that is not consumed by HTTPClient_Send\n" );
 
         if( cy_socket_getsockopt(http_obj->network_context->handle, CY_SOCKET_SOL_SOCKET, CY_SOCKET_SO_SNDTIMEO, (void*)(&read_recv_timeout), &timeout_length ) != CY_RSLT_SUCCESS )
         {
             cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "read receive timeout using cy_socket_getsockopt failed...\n" );
         }
-        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "read receive timeout value : [%d]\n", read_recv_timeout );
+        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "read receive timeout value : [%d]\n", read_recv_timeout );
 
         if( cy_socket_setsockopt( http_obj->network_context->handle, CY_SOCKET_SOL_SOCKET, CY_SOCKET_SO_SNDTIMEO, (void*)(&revcv_timeout_new), timeout_length ) != CY_RSLT_SUCCESS )
         {
@@ -797,7 +800,7 @@ cy_rslt_t cy_http_client_send( cy_http_client_t handle,
         do
         {
             byte_received = transport_interface.recv( http_obj->network_context , temp_buffer, TMP_BUFFER_SIZE );
-            cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "byte_received:[%d]...\n", byte_received );
+            cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "byte_received:[%d]...\n", byte_received );
         } while ( byte_received > 0 && byte_received == TMP_BUFFER_SIZE );
 
         if( cy_socket_setsockopt( http_obj->network_context->handle, CY_SOCKET_SOL_SOCKET, CY_SOCKET_SO_SNDTIMEO, (void*)(&read_recv_timeout), timeout_length ) != CY_RSLT_SUCCESS )
@@ -853,7 +856,7 @@ cy_rslt_t cy_http_client_read_header( cy_http_client_t handle,
     }
 
     read_header_count = ( num_header > response->header_count ) ? response->header_count : num_header;
-    cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\n Number of headers to read : [%d] \n", read_header_count );
+    cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\n Number of headers to read : [%d] \n", read_header_count );
 
     httpresponse.pBuffer = response->buffer;
     httpresponse.bufferLen = response->buffer_len;
