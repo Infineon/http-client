@@ -10,6 +10,11 @@ See the [README.md](./README.md) for a complete description of the HTTP Client l
 
 ## Changelog
 
+### v1.4.0
+
+* Fixed http disconnect notification issue.
+* Added support for KIT_XMC72_EVK_MUR_43439M2 kit
+
 ### v1.3.0
 
 * Added support for KIT_XMC72_EVK kit

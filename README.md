@@ -40,7 +40,9 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 - [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-MUR-43439M2)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/)
 
-- [XMC7200D-E272K8384 kit (KIT-XMC72-EVK)](https://www.infineon.com/KIT_XMC72_EVK)
+- [XMC7200D-E272K8384 kit (KIT-XMC72-EVK)](https://www.infineon.com/cms/en/product/evaluation-boards/kit_xmc72_evk/)
+
+- [XMC7200D-E272K8384 kit (KIT_XMC72_EVK_MUR_43439M2)](https://www.infineon.com/cms/en/product/evaluation-boards/kit_xmc72_evk/)
 
 ## Supported Frameworks
 
@@ -118,6 +120,9 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the
    $(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/standard/coreMQTT
    libs/aws-iot-device-sdk-embedded-C/libraries/standard/coreMQTT
    ```
+## Notes
+
+`cy_http_client_init` will start a thread which is responsible for sending http disconnect notification to application. This thread is created with priority `CY_RTOS_PRIORITY_ABOVENORMAL`. It is recommended to configure a less priority for the application than the http disconnect event thread. If the application has higher priority and running busy loop, http thread might not get scheduled by the OS which will result in missing of disconnect notification.
 
 ## Additional Information
 

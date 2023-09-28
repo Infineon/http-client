@@ -73,7 +73,7 @@
 #define HTTP_METHOD_OPTIONS                                            "OPTIONS"    /* HTTP Method OPTIONS string. */
 #define HTTP_METHOD_TRACE                                              "TRACE"      /* HTTP Method TRACE string.   */
 
-#define CY_HTTP_CLIENT_DISCONNECT_EVENT_THREAD_PRIORITY                 ( CY_RTOS_PRIORITY_NORMAL )
+#define CY_HTTP_CLIENT_DISCONNECT_EVENT_THREAD_PRIORITY                 ( CY_RTOS_PRIORITY_ABOVENORMAL )
 #define CY_HTTP_CLIENT_DISCONNECT_EVENT_QUEUE_TIMEOUT_IN_MSEC           ( 500 )
 /******************************************************
  *                   Enumerations
