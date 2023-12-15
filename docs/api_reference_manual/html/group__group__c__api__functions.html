@@ -239,6 +239,8 @@ Functions</h2></td></tr>
 
 <p>Connects to the given HTTP server and establishes a connection. </p>
 <p >This function must be called after calling <a class="el" href="group__group__c__api__functions.html#ga541271f1a31f2c10ccd07db315301a14">cy_http_client_create</a>.</p>
+<p >Note: send_timeout_ms &amp; receive_timeout_ms timeout is used by underlying network stack to receive/send the complete data asked by application or return when timeout happens. Since application/HTTP client library is not aware about the amount of data to read from network stack it will ask for some number of bytes. If network stack has those many number of bytes available it will return immediately with number of bytes. In case when number of bytes are not available, network stack waits for data till receive_timeout_ms expires. When receive_timeout_ms value is set to higher value, network stack will wait till timeout even though the data is received. This will lead to delay in processing the HTTP response. To avoid such issues, recommendation is to configure send_timeout_ms &amp; receive_timeout_ms in range of 100~500ms.</p>
+<p >Now when HTTP response is larger which cannot be read/sent in timeout configured, HTTP client library provides another set of timeout which will be used by HTTP client library to keep sending/receiving remaining number of bytes till timeout occurs. HTTP client library provides HTTP_SEND_RETRY_TIMEOUT_MS &amp; HTTP_RECV_RETRY_TIMEOUT_MS configuration which value can be set in application makefile.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">handle</td><td>[in] : HTTP Client handle created using <a class="el" href="group__group__c__api__functions.html#ga541271f1a31f2c10ccd07db315301a14">cy_http_client_create</a>. </td></tr>
@@ -291,6 +293,7 @@ Functions</h2></td></tr>
 
 <p>Generates the request Header used as HTTP Client request header during <a class="el" href="group__group__c__api__functions.html#ga7bed0b2dfd40997c8471fc60ae27efb9">cy_http_client_send</a>. </p>
 <p >This function must be called after calling <a class="el" href="group__group__c__api__functions.html#ga541271f1a31f2c10ccd07db315301a14">cy_http_client_create</a>.</p>
+<p >Note: This function will automatically add the host header to request buffer. Additional headers are added to the buffer based on the header and num_header arguments. If additional headers are not required, pass header as NULL and num_header as 0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">handle</td><td>[in] : HTTP Client handle created using <a class="el" href="group__group__c__api__functions.html#ga541271f1a31f2c10ccd07db315301a14">cy_http_client_create</a>. </td></tr>

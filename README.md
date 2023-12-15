@@ -44,6 +44,8 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 - [XMC7200D-E272K8384 kit (KIT_XMC72_EVK_MUR_43439M2)](https://www.infineon.com/cms/en/product/evaluation-boards/kit_xmc72_evk/)
 
+- [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-CYW43022CUB)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/)
+
 ## Supported Frameworks
 
 This middleware library supports the ModusToolbox&trade; environment.
@@ -64,6 +66,8 @@ To pull wifi-core-freertos-lwip-mbedtls and http-client libraries create the fol
       <code>
       https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/wifi-core-freertos-lwip-mbedtls/latest-v1.X
       </code>
+
+      **Note:** To use TLS version 1.3, please upgrade wifi-core-freertos-lwip-mbedtls to latest-v2.X (It is supported on all the platforms except [PSoC&trade; 64S0S2 Wi-Fi Bluetooth&reg; pioneer kit (CY8CKIT-064S0S2-4343W)](https://www.cypress.com/documentation/development-kitsboards/psoc-64-standard-secure-aws-wi-fi-bt-pioneer-kit-cy8ckit))
    - *http-client.mtb:*
       <code>
       https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X
@@ -75,6 +79,8 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the
       <code>
       https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/ethernet-core-freertos-lwip-mbedtls/latest-v1.X
       </code>
+
+      **Note:** To use TLS version 1.3, please upgrade ethernet-core-freertos-lwip-mbedtls to latest-v2.X.
    - *http-client.mtb:*
       <code>
       https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X
@@ -83,9 +89,6 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the
 3. Review and make the required changes to the pre-defined configuration files.
  - The configuration files are bundled with the wifi-mw-core library for FreeRTOS, lwIP, and Mbed TLS. See [README.md](https://github.com/Infineon/wifi-mw-core/blob/master/README.md) for details.
  - If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using **Wi-Fi core freertos lwip mbedtls bundle library**, the configuration files are in `wifi-core-freertos-lwip-mbedtls/configs` folder. Similarly if the application is using **Ethernet Core FreeRTOS lwIP mbedtls library**, the configuration files are in `ethernet-core-freertos-lwip-mbedtls/configs` folder.
-
-- If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using Wi-Fi core freertos lwip mbedtls bundle library, the configuration files are in wifi-core-freertos-lwip-mbedtls/configs folder. Similarly if the application is using Ethernet Core FreeRTOS lwIP mbedtls library, the configuration files are in ethernet-core-freertos-lwip-mbedtls/configs folder.
-
 
 4. Define the following COMPONENTS in the application's Makefile for the Azure port library.
     ```
@@ -115,11 +118,17 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the
    DEFINES += HTTP_DO_NOT_USE_CUSTOM_CONFIG
    DEFINES += MQTT_DO_NOT_USE_CUSTOM_CONFIG
    ```
-9. The "aws-iot-device-sdk-port" layer includes the "coreHTTP" and "coreMQTT" modules of the "aws-iot-device-sdk-embedded-C" library by default. If the user application doesn't use MQTT client features, add the following path in the .cyignore file of the application to exclude the coreMQTT source files from the build.
+9. Define the following macro in the application's makefile to configure the send timeout 'M' & receive timeout 'N' for HTTP client library. By default these timeout values will be set to 10ms.
    ```
-   $(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/standard/coreMQTT
-   libs/aws-iot-device-sdk-embedded-C/libraries/standard/coreMQTT
+   DEFINES += HTTP_SEND_RETRY_TIMEOUT_MS=<M>
+   DEFINES += HTTP_RECV_RETRY_TIMEOUT_MS=<N>
    ```
+10. The "aws-iot-device-sdk-port" layer includes the "coreHTTP" and "coreMQTT" modules of the "aws-iot-device-sdk-embedded-C" library by default. If the user application doesn't use MQTT client features, add the following path in the .cyignore file of the application to exclude the coreMQTT source files from the build.
+
+       ```
+       $(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/standard/coreMQTT
+       libs/aws-iot-device-sdk-embedded-C/libraries/standard/coreMQTT
+       ```
 ## Notes
 
 `cy_http_client_init` will start a thread which is responsible for sending http disconnect notification to application. This thread is created with priority `CY_RTOS_PRIORITY_ABOVENORMAL`. It is recommended to configure a less priority for the application than the http disconnect event thread. If the application has higher priority and running busy loop, http thread might not get scheduled by the OS which will result in missing of disconnect notification.

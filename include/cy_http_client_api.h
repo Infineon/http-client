@@ -41,6 +41,10 @@
 #ifndef CY_HTTP_CLIENT_API_H_
 #define CY_HTTP_CLIENT_API_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -345,7 +349,7 @@ cy_rslt_t cy_http_client_init(void);
  * @param server_info [in]           : Pointer for the HTTP Client Server information required during connect and send.
  * @param disconn_cb [in]            : Pointer to the callback function to be invoked on disconnect.
  * @param user_data [in]             : User data to be sent while invoking the disconnect callback.
- * @param handle [out]               : Pointer to store the HTTP Client handle allocated by this function on a successful return. 
+ * @param handle [out]               : Pointer to store the HTTP Client handle allocated by this function on a successful return.
  *                                     Caller should not free the handle directly. User needs to invoke \ref cy_http_client_delete to free the handle.
  *
  * @return cy_rslt_t                 : CY_RSLT_SUCCESS on success; error codes in @ref http_client_defines otherwise.
@@ -355,6 +359,14 @@ cy_rslt_t cy_http_client_create(cy_awsport_ssl_credentials_t *security, cy_awspo
 /**
  * Connects to the given HTTP server and establishes a connection.
  * This function must be called after calling \ref cy_http_client_create.
+ *
+ * Note: send_timeout_ms & receive_timeout_ms timeout is used by underlying network stack to receive/send the complete data asked by application or return when timeout happens. Since application/HTTP client library
+ *       is not aware about the amount of data to read from network stack it will ask for some number of bytes. If network stack has those many number of bytes available it will return immediately with number of bytes.
+ *       In case when number of bytes are not available, network stack waits for data till receive_timeout_ms expires. When receive_timeout_ms value is set to higher value, network stack will wait till timeout even
+ *       though the data is received. This will lead to delay in processing the HTTP response. To avoid such issues, recommendation is to configure send_timeout_ms & receive_timeout_ms in range of 100~500ms.
+ *
+ *       Now when HTTP response is larger which cannot be read/sent in timeout configured, HTTP client library provides another set of timeout which will be used by HTTP client library to keep sending/receiving remaining
+ *       number of bytes till timeout occurs. HTTP client library provides HTTP_SEND_RETRY_TIMEOUT_MS & HTTP_RECV_RETRY_TIMEOUT_MS configuration which value can be set in application makefile.
  *
  * @param handle [in]                : HTTP Client handle created using \ref cy_http_client_create.
  * @param send_timeout_ms [in]       : Socket send timeout in milliseconds.
@@ -366,6 +378,9 @@ cy_rslt_t cy_http_client_connect(cy_http_client_t handle, uint32_t send_timeout_
 /**
  * Generates the request Header used as HTTP Client request header during \ref cy_http_client_send.
  * This function must be called after calling \ref cy_http_client_create.
+ *
+ * Note: This function will automatically add the host header to request buffer. Additional headers are added to the buffer based on the header and num_header arguments.
+ *       If additional headers are not required, pass header as NULL and num_header as 0.
  *
  * @param handle [in]                : HTTP Client handle created using \ref cy_http_client_create.
  * @param request [in/out]           : Pointer to the HTTP request structure. The list of HTTP request headers are stored in the HTTP protocol header format.
@@ -435,6 +450,10 @@ cy_rslt_t cy_http_client_delete(cy_http_client_t handle);
  * @return cy_rslt_t        : CY_RSLT_SUCCESS on success; error codes in @ref http_client_defines otherwise.
  */
 cy_rslt_t cy_http_client_deinit(void);
+
+#ifdef __cplusplus
+} /*extern "C" */
+#endif
 
 /**
 * @}

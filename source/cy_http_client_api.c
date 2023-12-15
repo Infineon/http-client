@@ -554,7 +554,7 @@ cy_rslt_t cy_http_client_write_header( cy_http_client_t handle,
     cy_http_client_object_t *http_obj;
     HTTPRequestInfo_t        request_info;
     HTTPRequestHeaders_t     request_headers;
-    int                      i;
+    int                      i = 0;
 
     cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "%s(): START \n", __FUNCTION__ );
 
@@ -564,7 +564,7 @@ cy_rslt_t cy_http_client_write_header( cy_http_client_t handle,
         return CY_RSLT_HTTP_CLIENT_ERROR_OBJ_NOT_INITIALIZED;
     }
 
-    if( request == NULL || header == NULL || num_header == 0 )
+    if( request == NULL || ( header == NULL && num_header != 0 ) || ( header != NULL && num_header == 0 ) )
     {
         cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "Invalid Arguments \n" );
         return CY_RSLT_HTTP_CLIENT_ERROR_BADARG;
@@ -675,6 +675,15 @@ exit :
     return result;
 }
 
+/* Function to get the milliseconds since RTOS start */
+static uint32_t get_current_time_ms( void )
+{
+    cy_time_t time_ms;
+    cy_rtos_get_time(&time_ms);
+
+    return time_ms;
+}
+
 cy_rslt_t cy_http_client_send( cy_http_client_t handle,
                                cy_http_client_request_header_t *request,
                                uint8_t *payload,
@@ -736,6 +745,7 @@ cy_rslt_t cy_http_client_send( cy_http_client_t handle,
      * request headers is reused here. */
     httpresponse.pBuffer = request->buffer;
     httpresponse.bufferLen = request->buffer_len;
+    httpresponse.getTime = get_current_time_ms;
 
     is_content = ( payload_len > 0 ) ? !HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG : HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG;
 

@@ -7,8 +7,15 @@ See the [README.md](./README.md) for a complete description of the HTTP Client l
 | Problem | Workaround |
 | ------- | ---------- |
 | IAR 9.30 toolchain throws build errors on Debug mode, if application explicitly includes iar_dlmalloc.h file | Add '--advance-heap' to LDFLAGS in application Makefile. |
+| HTTPS conneciton over TLS version 1.3 fails with servers enabling session ticket suppport | Currently there is no workaround since the issue is in 3rd party library |
 
 ## Changelog
+
+### v1.5.0
+
+* Supports Mbed TLS version 3.4.0
+* Supports connection to servers with TLS version 1.3
+* Added support for CY8CEVAL-062S2-CYW43022CUB kit
 
 ### v1.4.0
 
