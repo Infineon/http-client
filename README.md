@@ -46,6 +46,8 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 - [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-CYW43022CUB)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/)
 
+- [CYW955913EVK-01 Wi-Fi Bluetooth&reg; Prototyping Kit (CYW955913EVK-01)](https://www.infineon.com/CYW955913EVK-01)
+
 ## Supported Frameworks
 
 This middleware library supports the ModusToolbox&trade; environment.
@@ -73,7 +75,19 @@ To pull wifi-core-freertos-lwip-mbedtls and http-client libraries create the fol
       https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X
       </code>
 
-2. To use http-client library with Ethernet kits on FreeRTOS, lwIP, and Mbed TLS combination, the application should pull [http-client](https://github.com/Infineon/http-client) library and [ethernet-core-freertos-lwip-mbedtls](https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls) library which will internally pull secure-sockets, ethernet-connection-manager, FreeRTOS, lwIP, Mbed TLS and other dependent modules.
+2. To use http-client library with CYW955913EVK-01 kit, the application should pull [http-client](https://github.com/Infineon/http-client) library and [wifi-core-threadx-cat5](https://github.com/Infineon/wifi-core-threadx-cat5) library which will internally pull secure-sockets, wifi-connection-manager and other dependent modules.
+To pull wifi-core-threadx-cat5 and http-client libraries create the following *.mtb* files in deps folder.
+   - *wifi-core-threadx-cat5.mtb:*
+      <code>
+      https://github.com/Infineon/wifi-core-threadx-cat5#latest-v1.X#$$ASSET_REPO$$/wifi-core-threadx-cat5/latest-v1.X
+      </code>
+
+   - *http-client.mtb:*
+      <code>
+      https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X
+      </code>
+
+3. To use http-client library with Ethernet kits on FreeRTOS, lwIP, and Mbed TLS combination, the application should pull [http-client](https://github.com/Infineon/http-client) library and [ethernet-core-freertos-lwip-mbedtls](https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls) library which will internally pull secure-sockets, ethernet-connection-manager, FreeRTOS, lwIP, Mbed TLS and other dependent modules.
 To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the following *.mtb* files in deps folder.
    - *ethernet-core-freertos-lwip-mbedtls.mtb:*
       <code>
@@ -86,15 +100,20 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the
       https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X
       </code>
 
-3. Review and make the required changes to the pre-defined configuration files.
+4. Review and make the required changes to the pre-defined configuration files.
  - The configuration files are bundled with the wifi-mw-core library for FreeRTOS, lwIP, and Mbed TLS. See [README.md](https://github.com/Infineon/wifi-mw-core/blob/master/README.md) for details.
  - If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using **Wi-Fi core freertos lwip mbedtls bundle library**, the configuration files are in `wifi-core-freertos-lwip-mbedtls/configs` folder. Similarly if the application is using **Ethernet Core FreeRTOS lwIP mbedtls library**, the configuration files are in `ethernet-core-freertos-lwip-mbedtls/configs` folder.
+ **Note:** Configuration file changes are not required for CYW955913EVK-01.
 
-4. Define the following COMPONENTS in the application's Makefile for the Azure port library.
+5. Define the following COMPONENTS in the application's Makefile for the Azure port library.
     ```
     COMPONENTS=FREERTOS MBEDTLS LWIP SECURE_SOCKETS
     ```
-5. By default, the HTTP Client Library disables all the debug log messages. To enable log messages, the application must perform the following:
+    **Note:** For CYW955913EVK-01 only the following COMPONENTS are required.
+              ```
+              COMPONENTS=SECURE_SOCKETS
+              ```
+6. By default, the HTTP Client Library disables all the debug log messages. To enable log messages, the application must perform the following:
 
    1. Add the `ENABLE_HTTP_CLIENT_LOGS` macro to the *DEFINES* in the code example's Makefile. The Makefile entry would look like as follows:
        ```
@@ -104,26 +123,26 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the
 
       See [connectivity-utilities library API documentation](https://infineon.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html) for cy-log details.
 
-6. Define the following macro in the application's Makefile to configure the response header maximum length to 'N'. By default, this value will be set to 2048:
+7. Define the following macro in the application's Makefile to configure the response header maximum length to 'N'. By default, this value will be set to 2048:
    ```
    DEFINES+=HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES=<N>
    ```
-7. Define the following macro in the application's Makefile to configure the user agent name in all request headers. By default, this component will be added to the request header. Update this for user-defined agent values:
+8. Define the following macro in the application's Makefile to configure the user agent name in all request headers. By default, this component will be added to the request header. Update this for user-defined agent values:
 
    ```
    DEFINES += HTTP_USER_AGENT_VALUE="\"anycloud-http-client\""
    ```
-8. Define the following macro in the application's Makefile to mandatorily disable custom configuration header file:
+9. Define the following macro in the application's Makefile to mandatorily disable custom configuration header file:
    ```
    DEFINES += HTTP_DO_NOT_USE_CUSTOM_CONFIG
    DEFINES += MQTT_DO_NOT_USE_CUSTOM_CONFIG
    ```
-9. Define the following macro in the application's makefile to configure the send timeout 'M' & receive timeout 'N' for HTTP client library. By default these timeout values will be set to 10ms.
+10. Define the following macro in the application's makefile to configure the send timeout 'M' & receive timeout 'N' for HTTP client library. By default these timeout values will be set to 10ms.
    ```
    DEFINES += HTTP_SEND_RETRY_TIMEOUT_MS=<M>
    DEFINES += HTTP_RECV_RETRY_TIMEOUT_MS=<N>
    ```
-10. The "aws-iot-device-sdk-port" layer includes the "coreHTTP" and "coreMQTT" modules of the "aws-iot-device-sdk-embedded-C" library by default. If the user application doesn't use MQTT client features, add the following path in the .cyignore file of the application to exclude the coreMQTT source files from the build.
+11. The "aws-iot-device-sdk-port" layer includes the "coreHTTP" and "coreMQTT" modules of the "aws-iot-device-sdk-embedded-C" library by default. If the user application doesn't use MQTT client features, add the following path in the .cyignore file of the application to exclude the coreMQTT source files from the build.
 
        ```
        $(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/standard/coreMQTT

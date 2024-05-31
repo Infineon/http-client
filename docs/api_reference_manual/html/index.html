@@ -152,6 +152,7 @@ Supported Platform</h1>
 <li><a href="https://www.infineon.com/cms/en/product/evaluation-boards/kit_xmc72_evk/">XMC7200D-E272K8384 kit (KIT-XMC72-EVK)</a></li>
 <li><a href="https://www.infineon.com/cms/en/product/evaluation-boards/kit_xmc72_evk/">XMC7200D-E272K8384 kit (KIT_XMC72_EVK_MUR_43439M2)</a></li>
 <li><a href="https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/">PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-CYW43022CUB)</a></li>
+<li><a href="https://www.infineon.com/CYW955913EVK-01">CYW955913EVK-01 Wi-Fi Bluetooth&reg; Prototyping Kit (CYW955913EVK-01)</a></li>
 </ul>
 <h1><a class="anchor" id="section_frameworks"></a>
 Supported Frameworks</h1>
@@ -175,6 +176,11 @@ ModusToolbox™</h2>
 <li>http-client.mtb: <a href="https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X">https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X</a></li>
 </ul>
 </li>
+<li>To use http-client library with CYW955913EVK-01 kit, the application should pull <a href="https://github.com/Infineon/http-client">http-client</a> library and <a href="https://github.com/Infineon/wifi-core-threadx-cat5">wifi-core-threadx-cat5</a> library which will internally pull secure-sockets, wifi-connection-manager and other dependent modules. To pull wifi-core-threadx-cat5 and http-client libraries create the following *.mtb* files in deps folder.<ul>
+<li>wifi-core-threadx-cat5.mtb: <a href="https://github.com/Infineon/wifi-core-threadx-cat5#latest-v1.X#$$ASSET_REPO$$/wifi-core-threadx-cat5/latest-v1.X">https://github.com/Infineon/wifi-core-threadx-cat5#latest-v1.X#$$ASSET_REPO$$/wifi-core-threadx-cat5/latest-v1.X</a></li>
+<li>http-client.mtb: <a href="https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X">https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X</a></li>
+</ul>
+</li>
 <li>To use http-client library with Ethernet kits on FreeRTOS, lwIP, and Mbed TLS combination, the application should pull <a href="https://github.com/Infineon/http-client">http-client</a> library and <a href="https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls">ethernet-core-freertos-lwip-mbedtls</a> library which will internally pull secure-sockets, ethernet-connection-manager, FreeRTOS, lwIP, Mbed TLS and other dependent modules. To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the following *.mtb* files in deps folder.<ul>
 <li>ethernet-core-freertos-lwip-mbedtls.mtb: <a href="https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/ethernet-core-freertos-lwip-mbedtls/latest-v1.X">https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/ethernet-core-freertos-lwip-mbedtls/latest-v1.X</a></li>
 <li>http-client.mtb: <a href="https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X">https://github.com/Infineon/http-client#latest-v1.X#$$ASSET_REPO$$/http-client/latest-v1.X</a></li>
@@ -186,7 +192,9 @@ ModusToolbox™</h2>
 </ul>
 </li>
 <li>Define the following COMPONENTS in the application's Makefile for the HTTP client library. For additional information, see the "Quick Start" section in <a href="https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls/blob/master/README.md">README.md</a>. <div class="fragment"><div class="line">COMPONENTS=FREERTOS MBEDTLS LWIP SECURE_SOCKETS</div>
-</div><!-- fragment --></li>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>For CYW955913EVK-01 only the following COMPONENTS are required. <div class="fragment"><div class="line">COMPONENTS=SECURE_SOCKETS</div>
+</div><!-- fragment --></dd></dl>
+</li>
 <li>HTTP Client Library disables all the debug log messages by default. To enable log messages, the application must perform the following: <br  />
 <ul>
 <li>Add the <code>ENABLE_HTTP_CLIENT_LOGS</code> macro to the <em>DEFINES</em> in the code example's Makefile. The Makefile entry would look as follows: <div class="fragment"><div class="line">DEFINES+=ENABLE_HTTP_CLIENT_LOGS</div>

@@ -6,10 +6,14 @@ See the [README.md](./README.md) for a complete description of the HTTP Client l
 ## Known issues
 | Problem | Workaround |
 | ------- | ---------- |
-| IAR 9.30 toolchain throws build errors on Debug mode, if application explicitly includes iar_dlmalloc.h file | Add '--advance-heap' to LDFLAGS in application Makefile. |
+| IAR 9.40.2 toolchain throws build errors on Debug mode, if application explicitly includes iar_dlmalloc.h file | Add '--advanced_heap' to LDFLAGS in application Makefile. |
 | HTTPS conneciton over TLS version 1.3 fails with servers enabling session ticket suppport | Currently there is no workaround since the issue is in 3rd party library |
 
 ## Changelog
+
+### v1.6.0
+
+* Added support for CYW955913EVK-01 kit
 
 ### v1.5.0
 
@@ -57,8 +61,8 @@ This version of the library was validated for compatibility with the following s
 
 | Software and Tools                                        | Version |
 | :---                                                      | :----:  |
-| ModusToolbox&trade; Software Environment                  | 3.1     |
-| ModusToolbox&trade; Device Configurator                   | 4.10    |
+| ModusToolbox&trade; Software Environment                  | 3.2     |
+| ModusToolbox&trade; Device Configurator                   | 4.20    |
 | GCC Compiler                                              | 11.3.1  |
-| IAR Compiler (Only for ModusToolbox&trade;)               | 9.30    |
+| IAR Compiler (Only for ModusToolbox&trade;)               | 9.40.2  |
 | Arm Compiler 6                                            | 6.16    |
