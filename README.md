@@ -48,6 +48,8 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 - [CYW955913EVK-01 Wi-Fi Bluetooth&reg; Prototyping Kit (CYW955913EVK-01)](https://www.infineon.com/CYW955913EVK-01)
 
+- [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-CYW955513SDM2WLIPA)]( https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/ )
+
 ## Supported Frameworks
 
 This middleware library supports the ModusToolbox&trade; environment.

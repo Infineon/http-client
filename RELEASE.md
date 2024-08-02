@@ -11,6 +11,10 @@ See the [README.md](./README.md) for a complete description of the HTTP Client l
 
 ## Changelog
 
+### v1.7.0
+
+* Added support for CY8CEVAL-062S2-CYW955513SDM2WLIPA kit
+
 ### v1.6.0
 
 * Added support for CYW955913EVK-01 kit
