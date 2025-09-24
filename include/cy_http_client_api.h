@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, Cypress Semiconductor Corporation (an Infineon company) or
+ * Copyright 2025, Cypress Semiconductor Corporation (an Infineon company) or
  * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
  *
  * This software, including source code, documentation and related
@@ -346,6 +346,13 @@ cy_rslt_t cy_http_client_init(void);
  *
  * @param security [in]              : Credentials for TLS secure connection. For non-secure connection, set it to NULL.
  *                                     The application must allocate memory for keys and should not be freed until the HTTP Client object is deleted.
+ *
+ *                                     When the CY_TFM_PSA_SUPPORTED flag is enabled in the application's Makefile, and the device is
+ *                                     running with mbedtls version 3.6.x or higher, which internally supports
+ *                                     the TFM PSA API, it is required to set the private_key to
+ *                                     opaque_private_key_id. The opaque_private_key_id value is generated and
+ *                                     obtained during the provisioning process.
+ * 
  * @param server_info [in]           : Pointer for the HTTP Client Server information required during connect and send.
  * @param disconn_cb [in]            : Pointer to the callback function to be invoked on disconnect.
  * @param user_data [in]             : User data to be sent while invoking the disconnect callback.

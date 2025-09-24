@@ -50,6 +50,8 @@ This library supports RESTful methods such as GET, PUT, POST, and HEAD to commun
 
 - [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-CYW955513SDM2WLIPA)]( https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/ )
 
+- PSOC&trade; Edge E84 Evaluation Kit
+
 ## Supported Frameworks
 
 This middleware library supports the ModusToolbox&trade; environment.

@@ -193,7 +193,13 @@ Functions</h2></td></tr>
 <p >The handle to the HTTP Client instance is returned via the handle pointer supplied by the user on success. This handle is used for connect, disconnect, and sending HTTP Client requests. This function must be called after calling <a class="el" href="group__group__c__api__functions.html#ga1d24d8ba5a892e85ef97877fb0b21482">cy_http_client_init</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">security</td><td>[in] : Credentials for TLS secure connection. For non-secure connection, set it to NULL. The application must allocate memory for keys and should not be freed until the HTTP Client object is deleted. </td></tr>
+    <tr><td class="paramname">security</td><td>[in] : Credentials for TLS secure connection. For non-secure connection, set it to NULL. The application must allocate memory for keys and should not be freed until the HTTP Client object is deleted.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>When the CY_TFM_PSA_SUPPORTED flag is enabled in the application's Makefile, and the device is running with mbedtls version 3.6.x or higher, which internally supports the TFM PSA API, it is required to set the private_key to opaque_private_key_id. The opaque_private_key_id value is generated and obtained during the provisioning process.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
     <tr><td class="paramname">server_info</td><td>[in] : Pointer for the HTTP Client Server information required during connect and send. </td></tr>
     <tr><td class="paramname">disconn_cb</td><td>[in] : Pointer to the callback function to be invoked on disconnect. </td></tr>
     <tr><td class="paramname">user_data</td><td>[in] : User data to be sent while invoking the disconnect callback. </td></tr>

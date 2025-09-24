@@ -11,6 +11,11 @@ See the [README.md](./README.md) for a complete description of the HTTP Client l
 
 ## Changelog
 
+### v1.8.0
+
+* Added support for PSOC&trade; Edge E84 (PSE84) platform.
+* Enabled LLVM_ARM toolchain support.
+
 ### v1.7.0
 
 * Added support for CY8CEVAL-062S2-CYW955513SDM2WLIPA kit
@@ -65,8 +70,9 @@ This version of the library was validated for compatibility with the following s
 
 | Software and Tools                                        | Version |
 | :---                                                      | :----:  |
-| ModusToolbox&trade; Software Environment                  | 3.2     |
-| ModusToolbox&trade; Device Configurator                   | 4.20    |
-| GCC Compiler                                              | 11.3.1  |
-| IAR Compiler (Only for ModusToolbox&trade;)               | 9.40.2  |
-| Arm Compiler 6                                            | 6.16    |
+| ModusToolbox&trade; Software Environment                  | 3.6     |
+| ModusToolbox&trade; Device Configurator                   | 5.50    |
+| GCC Compiler                                              | 14.2.1  |
+| IAR Compiler (Only for ModusToolbox&trade;)               | 9.50.2  |
+| Arm Compiler 6                                            | 6.22    |
+| LLVM compiler                                             | 19.1.5  |
