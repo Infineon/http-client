@@ -103,11 +103,48 @@ extern "C" {
  *                      Macros
  ******************************************************/
 
+
 /******************************************************
  *                    Constants
  ******************************************************/
+
+#ifdef CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING
 /**
+ * @brief The size of the first chunk when receiving HTTP response data.
+ * 
+ * This defines the initial buffer size in bytes used for reading the first
+ * portion of an HTTP response. The library sets pResponse->bufferLen = CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE
+ * initially. This chunk will be parsed for header length and Content-Length field.
+ * Then http_client_header_parser_callback() will modify the pResponse->bufferLen = contentLen + headerLen
+ * 
+ * @note The COMPLETE HTTP header and Content-Length field MUST BE PRESENT WITHIN THIS CHUNK for ideal behaivour.
+ *       If this chunk doesn't contain at least one HTTP header (field : value) pair, 
+ *       the HTTP receive response will fail. If this value is too big the receive reponse will
+ *       NOT fail but there will be timeout for every response.
+ * 
+ * @warning The first chunk should accommodate the complete response header including 
+ *          terminating sequence and partial body (or no body), but not the complete body.
+ * 
+ * @default 128 bytes
  */
+#if !defined(CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE) 
+#define CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE                   ( 128U )
+#endif
+
+/**
+ * @brief Compile-time warning for CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE minimum value.
+ * 
+ * This compile-time check ensures that the first chunk size is at least 128 bytes,
+ * which is the minimum required to contain basic HTTP response header fields and status line.
+ * 
+ * @note This should ideally accomodate full header and no body or partial body
+ */
+#if (CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE) < 128 
+#warning "CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE is too small. Ensure it accommodates complete response header including terminating sequence and partial/no body"
+#endif
+#endif /* CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING */
+
+
 /** HTTP Client library error code start. */
 #define CY_RSLT_MODULE_HTTP_CLIENT_ERR_CODE_START           (0)
 

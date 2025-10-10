@@ -152,6 +152,38 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-client libraries create the
        $(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/standard/coreMQTT
        libs/aws-iot-device-sdk-embedded-C/libraries/standard/coreMQTT
        ```
+
+12. Enable smart HTTP response buffering to prevent timeouts.
+
+      - Define the `CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING` macro in the application's Makefile to enable this feature. By default, this feature is disabled.
+         ```
+         DEFINES += CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING
+         ```
+         When enabled, this feature optimizes HTTP response handling by:
+         1. First reading a small chunk of the response to analyze the headers
+         2. Determining the exact response size from the Content-Length header
+         3. Requesting the precise response size needed for the complete HTTP response
+         4. Reading the remaining response data without unnecessary waiting
+
+         This prevents timeouts that occur when the requested response size is greater than the actual response size, eliminating unnecessary network wait times. Enable this feature to improve response time and reduce network timeouts for HTTP requests where response sizes vary significantly.
+      
+
+13. Define the following macro in the application's Makefile to configure the first chunk size 'N' for HTTP client library. By default this value will be set to 128 bytes and will be keep incrementing by 128 bytes until "Content-Length" and header ending byte sequence is found. Note: Ideal case is that the complete HTTP header and header field "Content-Length" be present within this chunk size. If your HTTP responses have large headers, you may need to increase this value accordingly. Keep this value such that it will accomodate the complete header but not complete response ( this should accomodate the complete Header and partial Body ) and should not be more than the total size of http response buffer.
+      - Ideally this value should be set to size of complete header including terminating byte sequence + 0 or more byte of body but not complete body.
+         ```
+            ------------------------------------------------------------------------------------
+            | HTTP Response Header  |  HTTP Response Body                                      |
+            ------------------------------------------------------------------------------------
+            -----------------------------↑ 
+            CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE
+         ```
+         ```
+         DEFINES += CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE=<N>
+         ```
+      - **Note:** The library includes a compile-time sanity check that gives a compile time warning to ensure `CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE` is at least 128 bytes. If you need to use a smaller value (not recommended), make sure it will have atleast one header field in that.
+         
+         **Warning:** First chunk should contain ATLEAST one Header-Field : Value pair in it. Otherwise the app will fail.
+
 ## Notes
 
 `cy_http_client_init` will start a thread which is responsible for sending http disconnect notification to application. This thread is created with priority `CY_RTOS_PRIORITY_ABOVENORMAL`. It is recommended to configure a less priority for the application than the http disconnect event thread. If the application has higher priority and running busy loop, http thread might not get scheduled by the OS which will result in missing of disconnect notification.

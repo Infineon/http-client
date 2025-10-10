@@ -53,6 +53,8 @@
 #else
 #define cy_hc_log_msg(a,b,c,...)
 #endif
+
+#define min(a, b) ((a) < (b) ? (a) : (b))
 /******************************************************
  *                    Constants
  ******************************************************/
@@ -101,6 +103,16 @@ typedef struct http_client_object
     bool                           server_disconnect;        /* Indicates that the HTTP client is connected.          */
     bool                           user_disconnect;          /* Indicates that the user has initiated a disconnect.   */
 } cy_http_client_object_t ;
+
+#ifdef CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING
+typedef struct parser_callback_context
+{
+    HTTPResponse_t*               pResponse;                                     /* Pointer to the HTTP response structure.                              */
+    uint32_t                      complete_response_transport_size;              /* Complete response size (header + body) to be used by transport recv  */
+    uint32_t                      total_buffer_len;                              /* Total buffer length for the response.                                */
+    int32_t                       content_len;                                   /* Content-Len for each response (-1 if not present in header)          */
+} parser_callback_context_t ;
+#endif /* CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING */
 
 /******************************************************
  *               Static Function Declarations
@@ -684,6 +696,87 @@ static uint32_t get_current_time_ms( void )
     return time_ms;
 }
 
+#ifdef CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING
+
+static void http_client_header_parser_callback(void *pContext, const char *fieldLoc, size_t fieldLen, const char *valueLoc, size_t valueLen, uint16_t statusCode)
+{   
+    char* ptr;
+    uint32_t headerlen = 0;
+    HTTPResponse_t *response;
+    parser_callback_context_t *context = (parser_callback_context_t *) pContext;
+    
+    if(pContext == NULL || fieldLoc == NULL || valueLoc == NULL || fieldLen == 0 || valueLen == 0)
+    {
+        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR,"\n Invalid Arguments \n" );
+        return;
+    }
+    response= context->pResponse;
+    
+    /* For every response coreHTTP will keep track of which header fields are already parsed.... */
+    /* only once callback called per header field */
+    cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG4,"\n Status Code: %u Header Field: %.*s Header Value: %.*s \n", statusCode, (int)fieldLen, fieldLoc, (int)valueLen, valueLoc);
+    
+    if( (strncmp(fieldLoc, "Content-Length", fieldLen) == 0) || (strncmp(fieldLoc, "content-length", fieldLen) == 0) )
+    {
+        context->content_len = atoi(valueLoc);
+        if( context->content_len < 0 )
+        {
+            cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR,"\n Invalid Content-Length field value is received in the header. \n" );
+            context->content_len = -1;
+            return;
+        }
+        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG  ,"\n Receieved Header Parser Callback for Content-Length: %lu \n", context->content_len );
+    }
+
+    if( (strncmp(fieldLoc, "Transfer-Encoding", fieldLen) == 0) || (strncmp(fieldLoc, "transfer-encoding", fieldLen) == 0) )
+    {
+        if( (strncmp(valueLoc, "chunked", valueLen) == 0) || (strncmp(valueLoc, "Chunked", valueLen) == 0) )
+        {
+            cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_WARNING, "\n Transfer-Encoding: chunked is not supported in smart buffering mode. \n" );
+        }
+    }
+
+    /* For any other header field */
+    ptr= (char*)valueLoc + valueLen;                                                            /* point to the byte after the current header field : value */
+    if( ptr[0] == '\r' && ptr[1] == '\n' && ptr[2] == '\r' && ptr[3] == '\n' )
+    {
+        headerlen = (uint32_t) ( (uint8_t *)ptr - (uint8_t *)response->pBuffer + 4 );           /* Calculate the header length */
+    }
+
+    if(headerlen == 0)                                                                          /* Full header not yet there in buffer */
+    {
+        goto increment_buffer_len;                                      
+    } 
+
+    if( context->content_len == -1 )                                                            /* once full header is parsed, check if content length field was present in the header */
+    {
+        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_WARNING, "\n Content-Length field value is not present. \n" );
+        goto set_buffer_to_max_len;
+    }
+    
+    if( context->total_buffer_len < (headerlen + context->content_len) )                        /* Check if user provided buffer is sufficient to hold the response */
+    {
+        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_WARNING, "\n User provided buffer is not sufficient to hold the response. Header len = %lu Content len = %lu User provided buffer size = %lu \n", headerlen, context->content_len, context->total_buffer_len );
+        goto set_buffer_to_max_len;                                       /* Set the buffer size to max user provided buffer size */
+    }
+    
+    /* if both Content-Length field is present in the header and header terminating byte sequence is found... THEN ONLY Modify the buffer size to the Full Transport size in bytes */
+    /* coreHTTP will pass this to Transport layer as bytesToRecv in the subsequent call... */
+    response->bufferLen = headerlen + context->content_len;   
+    context->complete_response_transport_size = response->bufferLen;           
+    cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG4, "\n Headerlen = %lu  Content-len = %lu  Calculated pResponse->bufferLen = %lu \n", headerlen, context->content_len, response->bufferLen );
+    return;
+
+    increment_buffer_len:
+    response->bufferLen = min(context->total_buffer_len , response->bufferLen + 128U);
+    return;
+
+    set_buffer_to_max_len:
+    response->bufferLen = context->total_buffer_len;                             /* Set the buffer size to max user provided buffer size */
+    return;
+}
+#endif /* CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING */
+
 cy_rslt_t cy_http_client_send( cy_http_client_t handle,
                                cy_http_client_request_header_t *request,
                                uint8_t *payload,
@@ -700,6 +793,11 @@ cy_rslt_t cy_http_client_send( cy_http_client_t handle,
     uint8_t                    is_content;
     uint8_t                    temp_buffer[TMP_BUFFER_SIZE];
 
+#ifdef CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING
+    parser_callback_context_t  parser_context = {0};
+    HTTPClient_ResponseHeaderParsingCallback_t headerCallback = {0};
+#endif /* CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING */
+
     cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "%s(): START \n", __FUNCTION__ );
 
     if( handle == NULL )
@@ -713,7 +811,7 @@ cy_rslt_t cy_http_client_send( cy_http_client_t handle,
         cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\n Invalid Arguments \n" );
         return CY_RSLT_HTTP_CLIENT_ERROR_BADARG;
     }
-
+    
     http_obj = (cy_http_client_object_t *)handle;
 
     if( http_obj->isobjinitialized != true )
@@ -741,15 +839,48 @@ cy_rslt_t cy_http_client_send( cy_http_client_t handle,
     request_headers.bufferLen = request->buffer_len;
     request_headers.headersLen = request->headers_len;
 
-    /* Initialize the response object. The same buffer used for storing
-     * request headers is reused here. */
+    /* Initialize the response object. The same buffer used for storing */
+    /* request headers is reused here. */
     httpresponse.pBuffer = request->buffer;
-    httpresponse.bufferLen = request->buffer_len;
     httpresponse.getTime = get_current_time_ms;
+    httpresponse.bufferLen = request->buffer_len;
+
+
+#ifdef CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING
+    /* register callback function and set pContext */
+    headerCallback.onHeaderCallback = http_client_header_parser_callback;
+    parser_context.pResponse = &httpresponse;
+    parser_context.total_buffer_len = request->buffer_len;
+    parser_context.content_len = -1;
+    parser_context.complete_response_transport_size = 0;
+    headerCallback.pContext = &parser_context;
+    httpresponse.pHeaderParsingCallback = &headerCallback;
+
+    httpresponse.bufferLen = (request->buffer_len < CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE) ? request->buffer_len : CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE;
+#endif /* CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING */
 
     is_content = ( payload_len > 0 ) ? !HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG : HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG;
 
     httpstatus = HTTPClient_Send( &transport_interface, &request_headers, payload, payload_len, &httpresponse, is_content );
+
+#ifdef CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING
+    if( parser_context.content_len == -1 && httpstatus == HTTPSuccess )                                      /* Content-Length Not present in the first chunk this will cause timeout for every response*/
+    {
+        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_WARNING, "\n Content-Length field not found in first CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE (%d) bytes of response header. \n", CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE );
+    }
+
+    if( parser_context.complete_response_transport_size==0 && httpstatus == HTTPSuccess )                                          /* Content-Length is present in first chunk but not full header*/
+    {
+        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_WARNING, "\n CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE (%d) too small \n", CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE );
+    }
+                                                
+    if( CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE > parser_context.complete_response_transport_size && parser_context.complete_response_transport_size != 0 && httpstatus == HTTPSuccess  )       /* Full header not in FIRST_CHUNK this will cause timeout for every response */
+    {   
+        /* CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE is larger than the complete response size. Decrease this value such that it accomodates complete response header including terminating sequence and partial body / NO body.. */
+        cy_hc_log_msg( CYLF_MIDDLEWARE, CY_LOG_WARNING, "\n CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE (%d) too large \n", CY_HTTP_RESPONSE_FIRST_CHUNK_SIZE);
+    }
+#endif /* CY_HTTP_CLIENT_ENABLE_SMART_BUFFERING */
+
     if( httpstatus != HTTPSuccess )
     {
         result = http_client_error( httpstatus );

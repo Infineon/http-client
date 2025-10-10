@@ -11,6 +11,10 @@ See the [README.md](./README.md) for a complete description of the HTTP Client l
 
 ## Changelog
 
+### v1.8.1
+
+* Added HTTP response buffering feature to prevent timeouts and optimize response handling.
+
 ### v1.8.0
 
 * Added support for PSOC&trade; Edge E84 (PSE84) platform.
